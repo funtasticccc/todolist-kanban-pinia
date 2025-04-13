@@ -30,10 +30,10 @@ As my personal initiative, I also added these features for better task visualiza
 ## 🛠️ Tech Stack
 
 | Technology             | Purpose                           |
-|------------------------|------------------------------------|
+|------------------------|-----------------------------------|
 | **Vue 3**              | UI Framework (Composition API)    |
 | **Vite**               | Build Tool                        |
-| **TypeScript**         | Type safety and better DX         |
+| **TypeScript**         | Type safety                       |
 | **Tailwind CSS**       | Styling & Responsive Layouts      |
 | **Pinia**              | State Management                  |
 | **vue-draggable-next** | Drag-and-drop functionality       |
