@@ -56,33 +56,18 @@
   import DeleteIcon from '../assets/icons/DeleteIcon.vue'
   import ModalConfirmation from './ModalConfirmation.vue'
   import ModalEdit from './ModalEdit.vue'
-  import { useTaskStore } from '../stores/taskStore'
+  import { useTaskStore, type ActivityType, type ColumnStatus, type Task } from '../stores/taskStore'
 
-  const props = defineProps({
-    status: {
-      type: String,
-      required: true
-    },
-    taskId: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
-      required: true
-    },
-    description: {
-      type: String,
-      required: true
-    },
-    links: {
-      type: Array,
-      default: () => []
-    },
-    types: {
-      type: Array,
-      default: () => []
-    }
+  interface ICardProps {
+    status: ColumnStatus
+    taskId: string
+    title: string
+    description: string
+    types?: ActivityType[]
+  }
+
+  const props = withDefaults(defineProps<ICardProps>(), {
+    types: () => []
   })
 
   const taskStore = useTaskStore()
@@ -93,7 +78,12 @@
     isModalConfirmationOpen.value = false
   }
 
-  const typeActivity = {
+  interface ActivityStyle {
+    bgColor: string
+    textColor: string
+  }
+
+  const typeActivity: Record<ActivityType, ActivityStyle> = {
     SHOPPING: { bgColor: '#FF5733', textColor: '#FFFFFF' },
     WORK: { bgColor: '#4CAF50', textColor: '#FFFFFF' },
     SOCIAL: { bgColor: '#2196F3', textColor: '#FFFFFF' },
@@ -119,10 +109,18 @@
   })
 
   const isModalEditOpen = ref(false)
-  const taskToEdit = ref({
+
+  interface ITaskEdit {
+    title: string
+    description: string
+    status: ColumnStatus
+    types: ActivityType[]
+  }
+
+  const taskToEdit = ref<ITaskEdit>({
     title: "",
     description: "",
-    status: "",
+    status: props.status,
     types: []
   })
 
@@ -140,7 +138,13 @@
     isModalEditOpen.value = false
   }
 
-  const updateTask = (payload) => {
-    taskStore.updateTask(props.taskId, payload, props.status, payload.status)
+  const updateTask = (payload:ITaskEdit) => {
+    const updatedPayload: Task = {
+      id: props.taskId,
+      title: payload.title,
+      description: payload.description,
+      types: payload.types
+    }
+    taskStore.updateTask(props.taskId, updatedPayload, props.status, payload.status)
   }
 </script>

@@ -6,20 +6,11 @@
     </div>
   </template>
   
-  <script setup lang="ts">
-     const props = defineProps({
-      text: {
-        type: String,
-        required: true
-      },
-      bgColor: {
-        type: String,
-        required: true
-      },
-      textColor: {
-        type: String,
-        required: true
-      }
-    })
-  </script>
+<script setup lang="ts">
+  defineProps<{
+    text: string
+    bgColor: string
+    textColor: string
+  }>()
+</script>
   

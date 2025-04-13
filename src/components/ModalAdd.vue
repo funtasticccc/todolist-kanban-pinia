@@ -153,32 +153,28 @@
   </div>
 </template>
 
-<script setup>
-import { ref, watch, computed } from 'vue'
+<script setup lang="ts">
+import { ref } from 'vue'
 import Badge from './Badge.vue'
+import { type FormData } from '../stores/taskStore'
 
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  }
-})
+const { isOpen, title } = defineProps<{
+  isOpen: boolean
+  title: string
+}>()
 
 const emit = defineEmits(['handleAddTask', 'onClose'])
 
-const formData = ref({
-title: "",
-description: "",
-status: "TO-DO",
-types: []
+
+const formData = ref<FormData>({
+  title: "",
+  description: "",
+  status: "TO-DO",
+  types: []
 })
 
 const errors = ref({
-title: ""
+  title: ""
 })
 
 const statusOptions = [
@@ -207,10 +203,6 @@ const isDropdownOpen = ref(false)
 const toggleDropdown = () => {
 isDropdownOpen.value = !isDropdownOpen.value
 }
-
-const selectedActivities = computed(() => {
-return formData.value.types.join(", ") || "Select Activities"
-})
 
 const handleSubmit = () => {
 if (!formData.value.title.trim()) {

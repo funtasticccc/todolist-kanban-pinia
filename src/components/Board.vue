@@ -61,8 +61,9 @@ import Column from './Column.vue'
 import Card from './Card.vue'
 import ModalAdd from './ModalAdd.vue'
 import { VueDraggableNext as draggable } from 'vue-draggable-next'
-import { useTaskStore } from '../stores/taskStore'
+import { useTaskStore, type FormData, type Task } from '../stores/taskStore'
 import { useMediaQuery } from '@vueuse/core'
+
 
 const isLargeScreen = useMediaQuery('(min-width: 768px)')
 
@@ -72,9 +73,15 @@ const columns = taskStore.columns
 
 const openModalAdd = ref<boolean>(false)
 
-const handleAddTask = (payload) => {
-    taskStore.addTask(payload.status, payload)
-  openModalAdd.value = false
+const handleAddTask = (payload: FormData) => {
+    const updatedPayload: Task = {
+        id: '',
+        title: payload.title,
+        description: payload.description,
+        types: payload.types
+    }
+    taskStore.addTask(payload.status, updatedPayload)
+    openModalAdd.value = false
 }
 </script>
 

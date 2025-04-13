@@ -2,17 +2,39 @@ import { defineStore } from 'pinia'
 import { ref, watchEffect } from 'vue'
 import { v4 as uuidv4 } from 'uuid'
 
-interface Task {
+export interface Task {
   id: string
   title: string
   description: string
-  types: string[]
+  types: ActivityType[]
 }
 
-interface Column<T> {
+export type ColumnStatus = 'TO-DO' | 'DOING' | 'DONE'
+
+export type ActivityType =
+| 'SHOPPING'
+| 'WORK'
+| 'SOCIAL'
+| 'FINANCE'
+| 'HEALTH'
+| 'HOUSEHOLD'
+| 'EDUCATION'
+| 'TRAVEL'
+| 'CREATIVE'
+| 'ERRAND'
+| 'MISCELLANEOUS'
+
+export interface Column<T> {
   title: string
-  id: string
+  id: ColumnStatus
   tasks: T
+}
+
+export interface FormData {
+  title: string
+  description: string
+  status: ColumnStatus
+  types: ActivityType[]
 }
 
 const initialData: Column<Task[]>[] = [

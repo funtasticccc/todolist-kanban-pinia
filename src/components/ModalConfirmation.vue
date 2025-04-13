@@ -48,28 +48,21 @@
   </template>
   
   <script setup lang="ts">
-  const props = defineProps({
-    isOpen: {
-      type: Boolean,
-      required: true,
-    },
-    title: {
-      type: String,
-      required: true,
-    },
-    description: {
-      type: String,
-      required: true,
-    },
-    cancelText: {
-      type: String,
-      default: 'Cancel',
-    },
-    confirmText: {
-      type: String,
-      default: 'Yes, Delete',
-    },
-  })
+  interface ModalConfirmationProps {
+    isOpen: boolean
+    title: string
+    description: string
+    cancelText?: string
+    confirmText?: string
+  }
+
+  const {
+    isOpen,
+    title,
+    description,
+    cancelText = 'Cancel',
+    confirmText = 'Yes, Delete'
+  } = defineProps<ModalConfirmationProps>()
   
   const emit = defineEmits<{
     (e: 'cancel'): void

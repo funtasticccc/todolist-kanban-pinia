@@ -153,31 +153,29 @@
     </div>
   </template>
 
-<script setup>
-import { ref, watch, computed } from 'vue'
+<script setup lang="ts">
+import { ref, watch } from 'vue'
 import Badge from './Badge.vue'
-
-const props = defineProps({
-  isOpen: {
-    type: Boolean,
-    required: true,
-  },
-  title: {
-    type: String,
-    required: true,
-  },
-  task: {
-    type: Object,
-    default: null,
-  }
-})
+import type { ActivityType, ColumnStatus } from '../stores/taskStore';
 
 const emit = defineEmits(['handleAddTask', 'onClose'])
 
-const formData = ref({
+interface IFormEdit {
+  title: string
+  description: string
+  status: ColumnStatus
+  types: ActivityType[]
+}
+
+const props = defineProps<{
+  isOpen: boolean
+  title: string
+  task?: IFormEdit | null
+}>()
+
+const formData = ref<IFormEdit>({
   title: "",
   description: "",
-  assignees: [],
   status: "TO-DO",
   types: []
 })
@@ -218,9 +216,6 @@ const toggleDropdown = () => {
   isDropdownOpen.value = !isDropdownOpen.value
 }
 
-const selectedActivities = computed(() => {
-  return formData.value.types.join(", ") || "Select Activities"
-})
 
 const handleSubmit = () => {
   if (!formData.value.title.trim()) {
@@ -236,7 +231,6 @@ const handleSubmit = () => {
   formData.value = {
     title: "",
     description: "",
-    assignees: [],
     status: "TO-DO",
     types: []
   }
